@@ -12,7 +12,7 @@ if [ "$RUN_TESTS" != "true" ]; then
 fi
 
 # TODO this is not Travis agnostic
-export BOOST_TEST_RANDOM=1$TRAVIS_BUILD_ID
+export BOOST_TEST_RANDOM=1$BUILD_NUMBER
 export LD_LIBRARY_PATH=$BUILD_DIR/depends/$HOST/lib
 
 export WINEDEBUG=fixme-all

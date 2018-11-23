@@ -68,7 +68,7 @@ for(int i = 0; i < targets.size(); i++) {
       def gitianImage
       stage("${target}/builder-image") {
         dir('dash') {
-          gitianImage = docker.build("dash-gitian:${env.BUILD_ID}", 'ci -f ci/Dockerfile.gitian-builder')
+          gitianImage = docker.build("dash-gitian:${env.BUILD_NUMBER}", 'ci -f ci/Dockerfile.gitian-builder')
         }
       }
 

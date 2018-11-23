@@ -31,7 +31,7 @@ for(int i = 0; i < targets.size(); i++) {
       def env = [
         "BUILD_TARGET=${target}",
         "PULL_REQUEST=false",
-        "JOB_NUMBER=${BUILD_NUMBER}",
+        "BUILD_NUMBER=${BUILD_NUMBER}",
       ]
       withEnv(env) {
         def builderImageName="dash-builder-${target}"
