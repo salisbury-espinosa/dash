@@ -109,17 +109,13 @@ if ENABLE_ZMQ:
 
 testScripts = [
     # longest test should go first, to favor running tests in parallel
-    'dip3-deterministicmns.py', # NOTE: needs dash_hash to pass
     'wallet-hd.py',
     'walletbackup.py',
     # vv Tests less than 5m vv
     'p2p-fullblocktest.py', # NOTE: needs dash_hash to pass
     'fundrawtransaction.py',
     'fundrawtransaction-hd.py',
-    'p2p-autoinstantsend.py',
-    'autoix-mempool.py',
     # vv Tests less than 2m vv
-    'p2p-instantsend.py',
     'wallet.py',
     'wallet-accounts.py',
     'wallet-dump.py',
@@ -204,17 +200,37 @@ testScriptsExt = [
     'p2p-acceptblock.py', # NOTE: needs dash_hash to pass
 ]
 
+# These are much more expensive then the regular tests as they require many nodes
+testScriptsMasternodes = [
+    'dip3-deterministicmns.py', # NOTE: needs dash_hash to pass
+    'p2p-instantsend.py',
+    'p2p-autoinstantsend.py',
+    'autoix-mempool.py',
+]
 
 def runtests():
     test_list = []
+    default_tests = True
+    if '-regular' in opts:
+        test_list += testScripts
+        default_tests = False
+    if '-masternodes' in opts:
+        test_list += testScriptsMasternodes
+        default_tests = False
     if '-extended' in opts:
-        test_list = testScripts + testScriptsExt
-    elif len(opts) == 0 or (len(opts) == 1 and "-win" in opts):
+        test_list += testScriptsExt
+        default_tests = False
+    if '-win' in opts:
         test_list = testScripts
-    else:
-        for t in testScripts + testScriptsExt:
-            if t in opts or re.sub(".py$", "", t) in opts:
-                test_list.append(t)
+        default_tests = False
+
+    if default_tests:
+        if len(opts) == 0:
+            test_list = testScripts
+        else:
+            for t in testScripts + testScriptsExt + testScriptsMasternodes:
+                if t in opts or re.sub(".py$", "", t) in opts:
+                    test_list.append(t)
 
     if print_help:
         # Only print help of the first script and exit
