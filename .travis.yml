@@ -114,8 +114,9 @@ script:
 
   # Build src
   - test "$DEPENDS_TIMEOUT" != "true" && if [ "$DASH_BUILD_STAGE" = "Build" ]; then $DOCKER_RUN_IN_BUILDER ./ci/build_src.sh; fi
+  - if [ "$DEPENDS_TIMEOUT" = "true" -o $SECONDS -gt 3400 ]; then export SRC_TIMEOUT="true"; false; fi
   # Unit tests (need to be run in build stage)
-  - test "$DEPENDS_TIMEOUT" != "true" && if [ "$DASH_BUILD_STAGE" = "Build" ]; then $DOCKER_RUN_IN_BUILDER ./ci/test_unittests.sh; fi
+  - test "$SRC_TIMEOUT" != "true" && if [ "$DASH_BUILD_STAGE" = "Build" ]; then $DOCKER_RUN_IN_BUILDER ./ci/test_unittests.sh; fi
   #### END build stage ####
 
   #### BEGIN tests stage ####
