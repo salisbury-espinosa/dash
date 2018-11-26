@@ -23,7 +23,7 @@ AUTO_IX_MEM_THRESHOLD = 0.1
 
 class AutoIXMempoolTest(DashTestFramework):
     def __init__(self):
-        super().__init__(13, 10, ["-maxmempool=%d" % MAX_MEMPOOL_SIZE])
+        super().__init__(13, 10, ["-maxmempool=%d" % MAX_MEMPOOL_SIZE, "-debug=instantsend"])
         # set sender,  receiver
         self.receiver_idx = self.num_nodes - 2
         self.sender_idx = self.num_nodes - 3
